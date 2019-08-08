@@ -1,5 +1,7 @@
 package com.shirc.redis.delay.queue.core;
 
+import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.shirc.redis.delay.queue.common.Args;
 import com.shirc.redis.delay.queue.common.DelayQueueException;
 import com.shirc.redis.delay.queue.iface.RedisDelayQueue;
@@ -10,9 +12,6 @@ import com.shirc.redis.delay.queue.redis.RedisOperationByLua;
 import com.shirc.redis.delay.queue.threads.Move2ReadyThread;
 import com.shirc.redis.delay.queue.threads.RetryOutTimesThread;
 import com.shirc.redis.delay.queue.threads.ShutdownThread;
-import com.daimler.redis.delay.queue.utils.*;
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.shirc.redis.delay.queue.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

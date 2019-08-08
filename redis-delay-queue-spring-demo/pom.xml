@@ -8,7 +8,7 @@
         <version>2.1.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.daimler</groupId>
+    <groupId>com.shirc</groupId>
     <artifactId>redis-delay-queue-spring-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>redis-delay-queue-spring-demo</name>
@@ -31,7 +31,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.daimler</groupId>
+            <groupId>com.shirc</groupId>
             <artifactId>redis-delay-queue-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
