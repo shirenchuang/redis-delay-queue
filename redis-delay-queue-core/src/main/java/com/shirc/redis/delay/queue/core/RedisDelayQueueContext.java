@@ -194,6 +194,11 @@ public  class RedisDelayQueueContext   {
                     try {
                         //可用许可证数量
                         int availablePermits = semaphore.availablePermits();
+                        if(availablePermits==0){
+                            //如果当前可用的许可不够 阻塞获取一个信号量;这里就是用来当做阻塞的功能
+                            semaphore.acquire(1);
+                            semaphore.release();
+                        }
                         int maxGet = register.getLrangMaxCount()<availablePermits?register.getLrangMaxCount():availablePermits;
                         List<String> topicIds ;
                         if(maxGet<=1||
