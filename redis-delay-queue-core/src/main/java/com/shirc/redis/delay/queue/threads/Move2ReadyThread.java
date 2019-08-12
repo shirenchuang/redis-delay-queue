@@ -24,9 +24,7 @@ public class Move2ReadyThread {
     }
 
     private volatile boolean toStop = false;
-    /**一次执行搬运操作 最大搬运的元素个数默认值; 如果消息的生产能力很强,可以增大这个数值;
-     * 一次的搬运操作的次数可以理解它就是一个普通命令;耗时非常短;**/
-    private  volatile int moveMax = 10000;
+
 
     /** 搬运线程:  将 bucket中的延迟有序队列zSet尝试move到待消费队列List**/
     private  final ExecutorService BUCKET_MOVE_TO_LIST = Executors.newSingleThreadExecutor();
@@ -55,7 +53,7 @@ public class Move2ReadyThread {
                         }
                     }else {
                         //move
-                        long score = redisOperation.moveAndRtTopScore(getMoveMax());
+                        long score = redisOperation.moveAndRtTopScore();
                         //重新设置nextTime值;这里不调用tryUpdate来更新;而是直接set;以这里的为准
                         NextTimeHolder.nextTime.set(score);
                     }
@@ -68,10 +66,6 @@ public class Move2ReadyThread {
     }
 
 
-
-    public int getMoveMax() {
-        return moveMax;
-    }
 
     public void toStop() {
         logger.info("搬运线程关闭.....");

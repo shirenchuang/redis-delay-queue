@@ -76,7 +76,7 @@ public class RedisOperationByLua extends RedisOperationByNormal{
     }
 
     @Override
-    public long moveAndRtTopScore(int maxCount) {
+    public long moveAndRtTopScore() {
         long before = System.currentTimeMillis();
 
         List<String> keys = new ArrayList<>(2);
@@ -88,7 +88,7 @@ public class RedisOperationByLua extends RedisOperationByNormal{
         redisScript.setResultType(String.class);
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/moveAndRtTopScore.lua")));
         String newTime = (String) redisTemplate.execute(redisScript,redisTemplate.getValueSerializer(),
-                redisTemplate.getStringSerializer(),keys,maxCount,System.currentTimeMillis());
+                redisTemplate.getStringSerializer(),keys,System.currentTimeMillis());
         logger.info("执行一次移动操作用时:{} ",System.currentTimeMillis()-before);
         if(StringUtils.isEmpty(newTime))return Long.MAX_VALUE;
         return Long.parseLong(newTime);

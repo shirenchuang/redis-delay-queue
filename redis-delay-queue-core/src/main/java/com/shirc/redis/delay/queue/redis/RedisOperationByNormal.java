@@ -65,11 +65,11 @@ public class RedisOperationByNormal implements RedisOperation {
      * 从zset搬运到list
      * 做一次搬运操作并且返回搬运完之后的 队首元素的score
      * 如果搬运之后没有了元素则返回Long.MAX_VALUE
-     * @param maxCount  一次搬运的最大次数
      * @return
      */
     @Override
-    public long moveAndRtTopScore(int maxCount){
+    public long moveAndRtTopScore(){
+        int maxCount = 1000;
         for(int i=0;i<maxCount;i++){
             Set<String> members = redisTemplate.opsForZSet().range(RedisKeyUtil.getBucketKey(),0l,1l);
             if(members==null||members.size()==0)return Long.MAX_VALUE;

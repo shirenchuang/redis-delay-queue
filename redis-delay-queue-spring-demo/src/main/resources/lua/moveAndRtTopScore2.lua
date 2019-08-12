@@ -39,7 +39,7 @@ local checkNo = redis.call('ZCARD',bucket_key_zset)
 if (tonumber(checkNo) > 0)
 then
     -- 一次取多个
-    local member = redis.call('ZRANGE',bucket_key_zset,0,maxCount);
+    local member = redis.call('Zrangebyscore',bucket_key_zset,0,tonumber(nowTime));
     -- 如果空表直接return
     if next(member) == nil
     then

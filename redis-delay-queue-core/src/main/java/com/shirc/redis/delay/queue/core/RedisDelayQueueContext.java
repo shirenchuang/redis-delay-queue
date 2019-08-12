@@ -104,6 +104,7 @@ public  class RedisDelayQueueContext   {
     private void init(){
         //启动监听Bucket线程
         Move2ReadyThread.getInstance().runMove2ReadyThread(redisOperation);
+        //支持BLPOP吗
         //5秒后启动Topic的监听线程池
         runTopicsThreadAfter5Sec();
         //启动每分钟唤醒一次线程

@@ -28,10 +28,8 @@ end
 local topis_list = KEYS[1];
 -- {PROJECT}:RD_ZSET_BUCKET:
 local bucket_key_zset = KEYS[2];
--- maxCount 为最大搬动次数;
-local maxCount = ARGV[1];
 -- 当前时间
-local nowTime = ARGV[2];
+local nowTime = ARGV[1];
 -- 查询元素个数
 local checkNo = redis.call('ZCARD',bucket_key_zset)
 
@@ -39,7 +37,7 @@ local checkNo = redis.call('ZCARD',bucket_key_zset)
 if (tonumber(checkNo) > 0)
 then
     -- 一次取多个
-    local member = redis.call('ZRANGE',bucket_key_zset,0,maxCount);
+    local member = redis.call('Zrangebyscore',bucket_key_zset,0,tonumber(nowTime));
     -- 如果空表直接return
     if next(member) == nil
     then

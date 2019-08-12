@@ -38,11 +38,10 @@ public interface RedisOperation {
     /**
      * 搬运操作
      * 从待搬运zset中搬运元素到 待消费队列list中
-     * @param maxCount  一次最大搬运元素个数;
      * @return  搬运完成之后,再返回zset中的队首元素的时间戳;
      *          如果zset没有元素了则返回  Long.MAXVALUE;
      */
-    long moveAndRtTopScore(int maxCount);
+    long moveAndRtTopScore();
 
 
     /**
