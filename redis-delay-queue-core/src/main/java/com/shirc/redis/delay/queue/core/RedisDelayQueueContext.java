@@ -53,6 +53,9 @@ public  class RedisDelayQueueContext   {
     /**TOPIC消费线程 标志位**/
     private static volatile boolean topicThreadStop = false;
 
+    /**是否能够使用BLPOP**/
+    private static boolean canUseBlpop = false;
+
     /**将异常情况下导致未被消费的Job 重新放回 待消费列表LIST中**/
     private  ThreadPoolExecutor RPUSH_NO_EXEC_JOB = new ThreadPoolExecutor(
             0,
@@ -105,6 +108,7 @@ public  class RedisDelayQueueContext   {
         //启动监听Bucket线程
         Move2ReadyThread.getInstance().runMove2ReadyThread(redisOperation);
         //支持BLPOP吗
+        checkBlpop();
         //5秒后启动Topic的监听线程池
         runTopicsThreadAfter5Sec();
         //启动每分钟唤醒一次线程
@@ -112,6 +116,16 @@ public  class RedisDelayQueueContext   {
         //注册 优雅关机
         registerDestory();
     }
+
+    //检查是否能够支持 BLPOP的操作;  codis 等集群不支持BLPOP
+    private void checkBlpop(){
+        try {
+             redisOperation.BLPOP("ShiRenChuang_11&*",1000);
+             canUseBlpop = true;
+        }catch (Exception e){
+        }
+    }
+
 
     //注册优雅停机
     private void registerDestory(){
@@ -207,20 +221,19 @@ public  class RedisDelayQueueContext   {
                                         ||topicIds.size()==0 )){
                             topicIds = new ArrayList<>(1);
 
-                      /*
-                            // 如果是用codis实现集群的话,codis不支持BLPOP的操作！
-                            //https://github.com/CodisLabs/codis/issues/841
-                            long blpop = System.currentTimeMillis();
-                            String topicId = redisOperation.BLPOPKey(register.getTopic());
-                            logger.info("BLPOPKey 耗时:{}",System.currentTimeMillis()-blpop);
-                            if(topicId!=null){
-                                topicIds.add(topicId);
+                            if(canUseBlpop){
+                                // 如果是用codis实现集群的话,codis不支持BLPOP的操作！
+                                //https://github.com/CodisLabs/codis/issues/841
+                                long blpop = System.currentTimeMillis();
+                                String topicId = redisOperation.BLPOPKey(register.getTopic());
+                                logger.info("BLPOPKey 耗时:{}",System.currentTimeMillis()-blpop);
+                                if(topicId!=null){
+                                    topicIds.add(topicId);
+                                }
+                            }else {
+                                // codis和twemproxy等等集群 不支持BLPOP 改成每秒获取一次
+                                Thread.sleep(1000);
                             }
-                       */
-
-                            // codis和twemproxy等等集群 不支持BLPOP 改成每秒获取一次
-                            Thread.sleep(1000);
-
                         }
                         if(topicIds!=null&&topicIds.size()>0){
                             //获取许可

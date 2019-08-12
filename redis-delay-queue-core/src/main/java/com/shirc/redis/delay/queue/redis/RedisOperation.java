@@ -60,6 +60,8 @@ public interface RedisOperation {
      */
     String BLPOPKey(String topic);
 
+    String BLPOP(String key, long timeout);
+
     /**
      * 获取最多maxGet元素 ;并且将这些元素删除
      * @param topic

@@ -112,7 +112,13 @@ public class RedisOperationByNormal implements RedisOperation {
      */
     @Override
     public String BLPOPKey(String topic){
-        Object object =  redisTemplate.opsForList().leftPop(RedisKeyUtil.getTopicListKey(topic),5,TimeUnit.SECONDS);
+        Object object =  BLPOP(RedisKeyUtil.getTopicListKey(topic),5*60*1000);
+        if(object==null)return null;
+        return object.toString();
+    }
+    @Override
+    public String BLPOP(String key,long timeout){
+        Object object = redisTemplate.opsForList().leftPop(key,timeout,TimeUnit.MILLISECONDS);
         if(object==null)return null;
         return object.toString();
     }
