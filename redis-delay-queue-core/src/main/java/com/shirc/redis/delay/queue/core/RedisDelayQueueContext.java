@@ -239,6 +239,7 @@ public  class RedisDelayQueueContext   {
                             //获取许可
                             semaphore.acquire(topicIds.size());
                             for(int i =0;i<topicIds.size();i++){
+                                if(StringUtils.isEmpty(topicIds.get(i)))continue;
                                 String topicId = topicIds.get(i).replaceAll("\"","");
                                 register.getTOPIC_THREADS().execute(()->{
                                     boolean isfail = false;
@@ -289,6 +290,11 @@ public  class RedisDelayQueueContext   {
                     } catch (Exception e) {
                         //e.printStackTrace();
                         logger.error(ExceptionUtil.getStackTrace(e));
+                        try {
+                            //避免redis断开连接一直刷屏,睡一秒
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1) {
+                        }
                     }
                 }
             });
