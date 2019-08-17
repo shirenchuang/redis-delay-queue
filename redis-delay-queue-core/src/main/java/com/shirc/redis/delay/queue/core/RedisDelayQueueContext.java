@@ -120,9 +120,12 @@ public  class RedisDelayQueueContext   {
     //检查是否能够支持 BLPOP的操作;  codis 等集群不支持BLPOP
     private void checkBlpop(){
         try {
-             redisOperation.BLPOP("ShiRenChuang_11&*",1000);
+             redisOperation.BLPOP("ShiRenChuang_11&*",5000);
              canUseBlpop = true;
         }catch (Exception e){
+            // nested exception is io.lettuce.core.RedisCommandTimeoutException
+            //如果Redis的客户端用的是 lettuce；好像阻塞的情况下超时之后会抛异常
+            canUseBlpop = false;
         }
     }
 
