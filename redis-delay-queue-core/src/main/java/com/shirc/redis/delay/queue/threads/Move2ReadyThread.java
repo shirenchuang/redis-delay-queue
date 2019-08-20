@@ -59,6 +59,13 @@ public class Move2ReadyThread {
                     }
                 } catch (InterruptedException e) {
                     //停机打断睡眠
+                }catch (Exception ec){
+                    //redis 网络挂掉  睡5s
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
