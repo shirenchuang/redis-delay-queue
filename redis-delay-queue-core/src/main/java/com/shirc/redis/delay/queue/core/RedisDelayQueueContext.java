@@ -99,7 +99,7 @@ public  class RedisDelayQueueContext   {
         this.redisOperation = new RedisOperationByLua(redisTemplate);
         this.redisDelayQueue = new RedisDelayQueueImpl(redisOperation,topicRegisterHolder,DelayQ_ASYNC);
         this.ipInRedisServer = ipInRedisServer;
-        this.PROJECTNAME = projectName;
+        PROJECTNAME = projectName;
         init();
     }
 
