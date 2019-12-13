@@ -4,6 +4,7 @@ import com.shirc.redis.delay.queue.common.RunTypeEnum;
 import com.shirc.redis.delay.queue.core.RedisDelayQueueContext;
 import com.shirc.redis.delay.queue.iface.RedisDelayQueue;
 import com.shirc.redisdelayqueuespringdemo.bo.MyArgs;
+import com.shirc.redisdelayqueuespringdemo.delayqueues.DelayQueueDemo2;
 import com.shirc.redisdelayqueuespringdemo.delayqueues.TopicEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,9 @@ public class IndexController {
     @Autowired
     RedisDelayQueueContext redisDelayQueueContext;
 
+    @Autowired
+    DelayQueueDemo2 delayQueueDemo2;
+
 
 
     /**
@@ -48,6 +52,17 @@ public class IndexController {
         myArgs.setContent("lalalalala");
         redisDelayQueue.add(myArgs,TopicEnums.DEMO_TOPIC.getTopic(),rt,type==null?RunTypeEnum.ASYNC:RunTypeEnum.SYNC);
     }
+
+    @GetMapping("/addJob2")
+    public void addJob2(Long delayTime,String userId ){
+        delayQueueDemo2.addDemo2DelayQueue(userId,delayTime);
+    }
+
+    @GetMapping("/delJob2")
+    public void delJob2(Long delayTime,String userId ){
+        delayQueueDemo2.delDemo2Queue(userId);
+    }
+
 
 
 

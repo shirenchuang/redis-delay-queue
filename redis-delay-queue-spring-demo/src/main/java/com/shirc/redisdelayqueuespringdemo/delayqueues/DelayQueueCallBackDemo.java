@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * @Description TODO
  * @Author shirenchuang
@@ -18,24 +20,39 @@ public class DelayQueueCallBackDemo extends AbstractTopicRegister<MyArgs> {
     private static final Logger logger = LoggerFactory.getLogger(DelayQueueCallBackDemo.class);
 
 
-    @Autowired
-    RedisTemplate redisTemplate;
-
 
     @Override
     public String getTopic() {
         return TopicEnums.DEMO_TOPIC.getTopic();
     }
 
+    /**
+     * 可以重写这个方法定义 定义这个Topic的核心线程数
+     * @return
+     */
     @Override
     public int getCorePoolSize() {
-        return 50;
+        return 5;
     }
 
+    /**
+     * 可以重写这个方法定义 定义这个Topic的最大线程数
+     * @return
+     */
     @Override
     public int getMaxPoolSize() {
-        return 300;
+        return 10;
     }
+
+    /**
+     * 可以重写这个方法定义 方法执行的超时时间
+     * @return
+     */
+    @Override
+    public int getMethodTimeout() {
+        return super.getMethodTimeout();
+    }
+
 
     @Override
     public void execute(MyArgs s) {
@@ -48,7 +65,7 @@ public class DelayQueueCallBackDemo extends AbstractTopicRegister<MyArgs> {
         } catch (InterruptedException e) {
 
         }
-        //logger.debug("DEMO_TOPIC:成功!,当前时间:{};执行推迟了时间:{},ID:",new Date(),delayTime,s.getId());
+        logger.debug("DEMO_TOPIC:成功!,当前时间:{};执行推迟了时间:{},ID:",new Date(),delayTime,s.getId());
     }
 
     @Override

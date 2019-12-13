@@ -89,7 +89,7 @@ public class RedisOperationByLua extends RedisOperationByNormal{
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/moveAndRtTopScore.lua")));
         String newTime = (String) redisTemplate.execute(redisScript,redisTemplate.getValueSerializer(),
                 redisTemplate.getStringSerializer(),keys,System.currentTimeMillis());
-        logger.info("执行一次移动操作用时:{} ",System.currentTimeMillis()-before);
+        //logger.info("执行一次移动操作用时:{} ",System.currentTimeMillis()-before);
         if(StringUtils.isEmpty(newTime))return Long.MAX_VALUE;
         return Long.parseLong(newTime);
     }

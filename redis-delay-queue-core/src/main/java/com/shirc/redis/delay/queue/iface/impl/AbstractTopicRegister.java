@@ -29,7 +29,7 @@ public abstract class AbstractTopicRegister <T extends Args> implements CallBack
     }
 
     /**线程池默认核心数**/
-    private int corePoolSize = 5;
+    private int corePoolSize = 2;
 
     /**线程池默认最大线程数**/
     private int maxPoolSize = 20;

@@ -23,7 +23,7 @@ public class BeanConfig {
     private RedisTemplate redisTemplate;
 
 
-    /**修改 redisTemplate 的key序列化方式**/
+    /**修改 redisTemplate 的key序列化方式  **/
     @Autowired(required = false)
     public void setRedisTemplate(RedisTemplate redisTemplate) {
         RedisSerializer stringSerializer = new StringRedisSerializer();
@@ -34,6 +34,8 @@ public class BeanConfig {
         this.redisTemplate = redisTemplate;
     }
 
+
+    /******* 接入 RedisDelayQueue  *******/
 
     @Bean
     public RedisDelayQueueContext getRdctx(){

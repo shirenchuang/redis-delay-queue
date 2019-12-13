@@ -10,7 +10,7 @@ import java.io.Serializable;
  **/
 public class Args implements Serializable {
 
-    private static final long serialVersionUID = 66666l;
+    private static final long serialVersionUID = 66666L;
 
     /**唯一键 不能为空**/
     private String id;
